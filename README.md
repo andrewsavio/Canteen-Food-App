@@ -1,50 +1,75 @@
 # Canteen Food Order App
 
-A premium, aesthetic Flutter application for canteen food pre-ordering. This app connects students and shop owners, allowing seamless food ordering and management.
+A Flutter app for pre-ordering canteen food. Students browse the menu and build a cart. Shop owners manage menu items and their availability. The backend is Supabase.
 
 ## Features
 
-### 🎨 User Interface
-- **Premium Dark Theme**: Modern aesthetic with deep blue/purple gradients and glassmorphism elements.
-- **Smooth Animations**: Page transitions, fade-ins, and interactive feedback.
-- **Responsive Design**: Optimized for mobile touch interactions.
+**Students**
+- Log in with Supabase email and password
+- Browse the menu and filter by category
+- Add items to a cart, change quantities, and see totals
+- Checkout with a **simulated** payment step (no real payment provider is connected)
 
-### 🛍️ Shop Owner Dashboard
-- **Real-time Inventory Management**: Add food items and see them appear immediately.
-- **Stock Control**: Toggle food availability or delete items.
-- **Categorization**: Organize food by Main Course, Snacks, Beverages, etc.
-- **Supabase Integration**: Secure, cloud-based data storage for all food items.
+**Shop owners**
+- Add menu items with name, price, description and category
+- Turn items on or off, or delete them
 
-### 🎓 Student Experience
-- **Interactive Menu**: Browse food items with category filtering.
-- **Smart Cart**: Add items, adjust quantities, and view totals.
-- **Simulated Payment Gateway**: seamless checkout experience.
-- **Live Updates**: See only available items in real-time.
+## Screens
 
-## Tech Stack
-- **Frontend**: Flutter (Dart)
-- **Backend & Auth**: Supabase
-- **State Management**: standard `setState` for cleanliness and simplicity in this scale.
+| File | Screen |
+|------|--------|
+| `lib/login_page.dart` | Login |
+| `lib/student_page.dart` | Menu and ordering |
+| `lib/cart_page.dart` | Cart and checkout |
+| `lib/shop_owner.dart` | Menu management |
+| `lib/supabase_flutter.dart` | Supabase data access |
 
-## Getting Started
+## Tech stack
 
-1. **Install Dependencies**
+- Flutter and Dart
+- Supabase (Postgres and email auth)
+- State management with `setState`. The app is small enough that a state library isn't needed.
+
+## Getting started
+
+**Prerequisites:** the Flutter SDK, and a Supabase project.
+
+1. Install dependencies:
    ```bash
    flutter pub get
    ```
+2. Point the app at your Supabase project. The URL and anon key are currently in `lib/main.dart`. Replace them with your own values. Prefer `--dart-define` so keys stay out of source code.
+3. Create the `food_items` table:
 
-2. **Run the App**
+   | Column | Type |
+   |--------|------|
+   | `id` | uuid, primary key |
+   | `name` | text |
+   | `price` | numeric |
+   | `description` | text |
+   | `category` | text |
+   | `is_available` | boolean |
+   | `created_at` | timestamptz |
+
+   The app also reads a `users` table for login.
+4. Run the app:
    ```bash
    flutter run
    ```
 
-## Database Schema (Supabase)
+## Before using real data
 
-The app uses a `food_items` table with the following structure:
-- `id`: uuid (primary key)
-- `name`: text
-- `price`: numeric/float
-- `description`: text
-- `category`: text
-- `is_available`: boolean
-- `created_at`: timestamptz
+- The repository does not include Row Level Security policies. Add them so that students can read available items, and only shop owners can change them.
+- The payment step is simulated. Don't take real money with this code as it stands.
+
+## Project layout
+
+```
+lib/
+├── main.dart            # app entry point and Supabase setup
+├── login_page.dart
+├── student_page.dart
+├── shop_owner.dart
+├── cart_page.dart
+└── supabase_flutter.dart
+```
