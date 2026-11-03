@@ -38,7 +38,7 @@ A Flutter app for pre-ordering canteen food. Students browse the menu and build 
    ```bash
    flutter pub get
    ```
-2. Point the app at your Supabase project. The URL and anon key are currently in `lib/main.dart`. Replace them with your own values. Prefer `--dart-define` so keys stay out of source code.
+2. Create a Supabase project and note its URL and anon (publishable) key. The app reads them from build-time definitions, so no keys live in the source code.
 3. Create the `food_items` table:
 
    | Column | Type |
@@ -52,14 +52,14 @@ A Flutter app for pre-ordering canteen food. Students browse the menu and build 
    | `created_at` | timestamptz |
 
    The app also reads a `users` table for login.
-4. Run the app:
+4. Run the app with your values:
    ```bash
-   flutter run
+   flutter run      --dart-define=SUPABASE_URL=https://your-project.supabase.co      --dart-define=SUPABASE_ANON_KEY=your-publishable-key
    ```
 
 ## Before using real data
 
-- The repository does not include Row Level Security policies. Add them so that students can read available items, and only shop owners can change them.
+- Enable Row Level Security on every table. Add policies so that students can read available items, and only shop owners can change them. The repository does not include these policies yet.
 - The payment step is simulated. Don't take real money with this code as it stands.
 
 ## Project layout
